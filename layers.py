@@ -1,5 +1,6 @@
 import numpy as np
 from activations import *
+from costs import *
 
 class Layer(object):
     def __init__(self, n_input, n_output, eta, act=Identity, W=None, b=None):
@@ -29,6 +30,25 @@ class Layer(object):
         dW = np.dot(self.input.T, grad)
         db = grad
 
+        self.update(dW, db)
+
+        return np.dot(grad, self.W.T)
+
     def update(self, dW, db):
         self.W -= self.eta * dW
         self.b -= self.eta * db
+
+    def get_parameters(self):
+        return {
+            'W': self.W,
+            'b': self.b
+        }
+
+class OutputLayer(Layer):
+    def __init__(self, n_input, n_output, eta, act=Identity, cost=MSE W=None, b=None):
+        super().__init__(n_input, n_output, eta, act=act, W=W, b=b)
+        self.cost = cost()
+
+    def backward(self, y_true):
+        loss = self.cost.derivative(self.output, y_true)
+        
