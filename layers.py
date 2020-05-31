@@ -36,7 +36,10 @@ class Layer(object):
 
     def update(self, dW, db):
         self.W -= self.eta * dW
-        self.b -= self.eta * db
+        self.b -= (self.eta * db).sum(0)
+
+    def __call__(self, input):
+        return self.act(np.dot(input, self.W) + np.reshape(self.b, (1, self.b.shape[0])))
 
     def get_parameters(self):
         return {
@@ -45,10 +48,18 @@ class Layer(object):
         }
 
 class OutputLayer(Layer):
-    def __init__(self, n_input, n_output, eta, act=Identity, cost=MSE W=None, b=None):
+    def __init__(self, n_input, n_output, eta, act=Identity, cost=MSE, W=None, b=None):
         super().__init__(n_input, n_output, eta, act=act, W=W, b=b)
         self.cost = cost()
 
     def backward(self, y_true):
+        # TODO: other cost functions losses: if self.cost == ... then loss = ...
         loss = self.cost.derivative(self.output, y_true)
-        
+
+        self.grads(loss)
+
+    def grads(self, grad_last):
+        dW = np.dot(self.input.T, grad_last)
+        db = grad_last
+
+        self.update(dW, db)
