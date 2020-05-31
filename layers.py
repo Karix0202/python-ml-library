@@ -26,7 +26,8 @@ class Layer(object):
         return self.output
 
     def backward(self, grad_last):
-        grad = np.dot(self.act.derivative(self.output), grad_last)
+        # grad = np.dot(self.act.derivative(self.output), grad_last)
+        grad = grad_last
         dW = np.dot(self.input.T, grad)
         db = grad
 
@@ -54,12 +55,15 @@ class OutputLayer(Layer):
 
     def backward(self, y_true):
         # TODO: other cost functions losses: if self.cost == ... then loss = ...
-        loss = self.cost.derivative(self.output, y_true)
+        loss = self.cost.derivative(self.output, y_true) #self.cost.derivative(self.output, y_true) dC/da
 
-        self.grads(loss)
+        grad = self.grads(loss)
+        return grad
 
     def grads(self, grad_last):
         dW = np.dot(self.input.T, grad_last)
         db = grad_last
 
         self.update(dW, db)
+
+        return np.dot(grad_last, self.W.T)
