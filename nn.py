@@ -28,7 +28,8 @@ class Model(object):
             for i in range(len(self.layers))[::-1]:
                 grad = self.layers[i].backward(grad)
 
-            print('ITER: {}, ERR: {}'.format(iter+1, cost().mean(self.predict(X), y)))
+            if verbose:
+                print('ITER: {}, ERR: {}'.format(iter+1, cost().mean(self.predict(X), y)))
 
     def predict(self, X):
         out = X
