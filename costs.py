@@ -20,3 +20,14 @@ class MSE(Cost):
 
     def derivative(self, y_hat, y_true):
         return 2 * (y_hat - y_true)
+
+
+class BinaryCrossEntropy(Cost):
+    def __call__(self, y_hat, y_true):
+        return -np.multiply(y_true, np.log(y_hat)) - np.multiply((1 - y_true), np.log(1 - y_hat))
+
+    def mean(self, y_hat, y_true):
+        return (-np.multiply(y_true, np.log(y_hat)) - np.multiply((1 - y_true), np.log(1 - y_hat))).mean()
+
+    def derivative(self, y_hat, y_true):
+        return y_hat - y_true
