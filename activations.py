@@ -26,4 +26,4 @@ class Identity(Activation):
         return input
 
     def derivative(self, input):
-        return np.ones((input.shape[0], 1))
+        return np.ones(input.shape)
