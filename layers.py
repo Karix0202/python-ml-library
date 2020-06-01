@@ -23,6 +23,7 @@ class Layer(object):
     def forward(self, input):
         self.input = input
         self.output = self.act(np.dot(self.input, self.W) + np.reshape(self.b, (1, self.b.shape[0])))
+
         return self.output
 
     def backward(self, grad_last):
