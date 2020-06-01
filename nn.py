@@ -19,8 +19,6 @@ class Model(object):
             'cost': cost,
         })
 
-        print(self.layers)
-
         for iter in range(n_iter):
             out = X
             for layer in self.layers:
@@ -30,6 +28,8 @@ class Model(object):
             for i in range(len(self.layers))[::-1]:
                 grad = self.layers[i].backward(grad)
 
+            print('ITER: {}, ERR: {}'.format(iter+1, cost().mean(self.predict(X), y)))
+
     def predict(self, X):
         out = X
         for layer in self.layers:
@@ -38,7 +38,7 @@ class Model(object):
         return out
 
     def pass_args(self, args):
-        self.layers[-1].cost = args['cost']
+        self.layers[-1].cost = args['cost']()
 
         for layer in self.layers:
             layer.eta = args['eta']
