@@ -26,8 +26,9 @@ class Layer(object):
         return self.output
 
     def backward(self, grad_last):
-        # grad = np.dot(self.act.derivative(self.output), grad_last)
         grad = grad_last
+        grad = np.multiply(self.act.derivative(self.output), grad_last)
+
         dW = np.dot(self.input.T, grad)
         db = grad
 
@@ -67,3 +68,11 @@ class OutputLayer(Layer):
         self.update(dW, db)
 
         return np.dot(grad_last, self.W.T)
+
+    def get_args(self):
+        print({
+            'W': self.W,
+            'b': self.b,
+            'cost': self.cost,
+            'eta': self.eta
+        })
