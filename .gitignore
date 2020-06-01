@@ -139,3 +139,4 @@ cython_debug/
 
 # Ignore main.py testing file
 main.py
+data/
