@@ -3,7 +3,7 @@ from activations import *
 from costs import *
 
 class Layer(object):
-    def __init__(self, n_input, n_output, eta, act=Identity, W=None, b=None):
+    def __init__(self, n_input, n_output, eta=.001, act=Identity, W=None, b=None):
         self.rnd_state = rnd_gen = np.random.RandomState(1)
         self.n_input = n_input
         self.n_output = n_output
@@ -49,7 +49,7 @@ class Layer(object):
         }
 
 class OutputLayer(Layer):
-    def __init__(self, n_input, n_output, eta, act=Identity, cost=MSE, W=None, b=None):
+    def __init__(self, n_input, n_output, eta=.001, act=Identity, cost=MSE, W=None, b=None):
         super().__init__(n_input, n_output, eta, act=act, W=W, b=b)
         self.cost = cost()
 
