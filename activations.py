@@ -16,10 +16,10 @@ class Sigmoid(Activation):
 
 class ReLU(Activation):
     def __call__(self, input):
-        return np.max(x, 0)
+        return np.maximum(input, 0)
 
     def derivative(self, input):
-        return np.heavside(input, 0)
+        return np.heaviside(input, 0)
 
 class Identity(Activation):
     def __call__(self, input):
