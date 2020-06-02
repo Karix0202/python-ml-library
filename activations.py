@@ -12,7 +12,7 @@ class Sigmoid(Activation):
         return 1 / (1 + np.exp(-input))
 
     def derivative(self, input):
-        return np.multiply(self(input), (1 - self(1 - input)))
+        return self(input) * (1 - self(input))
 
 class ReLU(Activation):
     def __call__(self, input):
@@ -27,3 +27,10 @@ class Identity(Activation):
 
     def derivative(self, input):
         return np.ones(input.shape)
+
+class Softmax(Activation):
+    def __call__(self, input):
+        return (np.exp(input).T / np.sum(np.exp(input), axis=1)).T
+
+    def derivative(self, input):
+        return self.input * (1 - self.input)
