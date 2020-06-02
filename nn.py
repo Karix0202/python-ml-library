@@ -31,7 +31,7 @@ class Model(object):
             err =  cost().mean(self.predict(X), y)
             self.training_errors.append(err)
 
-            if verbose:
+            if verbose and iter % 10 == 9:
                 print('ITER: {}, ERR: {}'.format(iter+1, err))
 
     def predict(self, X):
