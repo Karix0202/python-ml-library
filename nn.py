@@ -28,7 +28,7 @@ class Model(object):
             for i in range(len(self.layers))[::-1]:
                 grad = self.layers[i].backward(grad)
 
-            err =  cost().mean(self.predict(X), y)
+            err = cost().mean(self.predict(X), y)
             self.training_errors.append(err)
 
             if verbose and iter % 10 == 9:
