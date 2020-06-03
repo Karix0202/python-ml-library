@@ -24,10 +24,7 @@ class Model(object):
             for layer in self.layers:
                 out = layer.forward(out)
 
-            grad = y
-            for i in range(len(self.layers))[::-1]:
-                grad = self.layers[i].backward(grad)
-
+            self.backward(out, y, cost)
             err = cost().mean(self.predict(X), y)
             self.training_errors.append(err)
 
@@ -42,8 +39,6 @@ class Model(object):
         return out
 
     def pass_args(self, args):
-        self.layers[-1].cost = args['cost']()
-
         for layer in self.layers:
             layer.eta = args['eta']
 
@@ -51,10 +46,8 @@ class Model(object):
         if len(self.layers) <= 0:
             raise Exception('Model must have at least one layer')
 
-        for i in range(len(self.layers)):
-            if i != len(self.layers) - 1 and len(self.layers) == 1:
-                if isinstance(self.layers[i], OutputLayer):
-                    raise Exception('There can be only one OutputLayer')
+    def backward(self, output, y_true, cost):
+        grad = cost().derivative(output, y_true)
 
-        if not isinstance(self.layers[-1], OutputLayer):
-            raise Exception('Last layer must be instance of layers.OutputLayer class')
+        for i in range(len(self.layers))[::-1]:
+            grad = self.layers[-1].backward(grad)
