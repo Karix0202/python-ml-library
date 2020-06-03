@@ -43,37 +43,3 @@ class Layer(object):
 
     def __call__(self, input):
         return self.act(np.dot(input, self.W) + np.reshape(self.b, (1, self.b.shape[0])))
-
-    def get_parameters(self):
-        return {
-            'W': self.W,
-            'b': self.b
-        }
-
-class OutputLayer(Layer):
-    def __init__(self, n_input, n_output, eta=.001, act=Identity, cost=MSE, W=None, b=None):
-        super().__init__(n_input, n_output, eta, act=act, W=W, b=b)
-        self.cost = cost()
-
-    def backward(self, y_true):
-        # TODO: other cost functions losses: if self.cost == ... then loss = ...
-        loss = self.cost.derivative(self.output, y_true) #self.cost.derivative(self.output, y_true) dC/da
-
-        grad = self.grads(loss)
-        return grad
-
-    def grads(self, grad_last):
-        dW = np.dot(self.input.T, grad_last)
-        db = grad_last
-
-        self.update(dW, db)
-
-        return np.dot(grad_last, self.W.T)
-
-    def get_args(self):
-        print({
-            'W': self.W,
-            'b': self.b,
-            'cost': self.cost,
-            'eta': self.eta
-        })
