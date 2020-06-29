@@ -1,6 +1,7 @@
 from layers import *
 from costs import *
 from utils import *
+import matplotlib.pyplot as plt
 
 class Model(object):
     def __init__(self, cost):
@@ -15,7 +16,7 @@ class Model(object):
 
         self.layers.append(layer)
 
-    def fit(self, X, y, n_iter=1000, eta=.001, verbose=True):
+    def fit(self, X, y, n_iter=1000, eta=.001, verbose=True, plot=False):
         self.check_layers()
         self.check_shape(X)
         self.check_shape(y)
@@ -35,6 +36,8 @@ class Model(object):
 
             if verbose and iter % 10 == 9:
                 print('ITER: {}, ERR: {}'.format(iter+1, err))
+
+        self.plot_cost(self.training_errors)
 
     def predict(self, X):
         out = X
@@ -68,3 +71,10 @@ class Model(object):
             return self.predict(X)
         elif isinstance(self.cost, CrossEntropy):
             return one_hot_then_names(self.predict(X), target_names)
+
+    def plot_cost(self, errs):
+        plt.plot(np.arange(len(errs)), errs)
+        plt.xlabel('Epoch')
+        plt.ylabel('Cost')
+
+        plt.show()
