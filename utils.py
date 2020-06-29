@@ -11,7 +11,7 @@ def one_hot_encode(y):
                 else:
                     single.append(0)
             encoded.append(single)
-        return encoded
+        return np.array(encoded)
 
     for line in y:
         single = []
@@ -23,4 +23,4 @@ def one_hot_encode(y):
                 single.append(0)
         encoded.append(single)
 
-    return encoded
+    return np.array(encoded)
