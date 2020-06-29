@@ -24,3 +24,15 @@ def one_hot_encode(y):
         encoded.append(single)
 
     return np.array(encoded)
+
+
+def assign_names(y, names):
+    uniques = one_hot_encode(np.arange(0, y.shape[1]))
+    encoded = one_hot_encode(y)
+    encoded_ = list(encoded)
+    for i in range(uniques.shape[0]):
+        for j in range(encoded.shape[0]):
+            if np.array_equal(uniques[i], encoded[j]):
+                encoded_[j] = names[i]
+
+    return encoded_
