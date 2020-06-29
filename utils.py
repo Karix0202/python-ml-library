@@ -26,7 +26,7 @@ def one_hot_encode(y):
     return np.array(encoded)
 
 
-def assign_names(y, names):
+def one_hot_then_names(y, names):
     uniques = one_hot_encode(np.arange(0, y.shape[1]))
     encoded = one_hot_encode(y)
     encoded_ = list(encoded)
