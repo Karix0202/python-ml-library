@@ -8,6 +8,8 @@ class Model(object):
         self.layers = []
         self.training_errors = []
 
+        self.target_labels = None
+
         self.cost = cost()
 
     def add(self, layer):
@@ -16,10 +18,12 @@ class Model(object):
 
         self.layers.append(layer)
 
-    def fit(self, X, y, n_iter=1000, eta=.001, verbose=True, plot=False):
+    def fit(self, X, y, n_iter=1000, eta=.001, target_labels=None, verbose=True, plot=False):
         self.check_layers()
         self.check_shape(X)
         self.check_shape(y)
+
+        self.target_labels = target_labels
 
         self.pass_args({
             'eta': eta,
@@ -64,13 +68,16 @@ class Model(object):
         if len(X.shape) != 2:
             raise Exception('Data passed should be in shape (n data, k features), but got in shape: {}'.format(X.shape))
 
-    def __call__(self, X, target_names=None):
+    def __call__(self, X):
         self.check_shape(X)
 
         if isinstance(self.cost, MSE):
             return self.predict(X)
         elif isinstance(self.cost, CrossEntropy):
-            return one_hot_then_names(self.predict(X), target_names)
+            if self.target_labels != None:  
+                return one_hot_then_names(self.predict(X), self.target_labels)
+            else
+                return one_hot_encode(self.predict(X))
 
     def plot_cost(self, errs):
         plt.plot(np.arange(len(errs)), errs)
