@@ -4,7 +4,7 @@ from costs import *
 
 class Layer(object):
     def __init__(self, n_input, n_output, eta=.001, act=Identity, W=None, b=None):
-        self.rnd_state = rnd_gen = np.random.RandomState(1)
+        self.rnd_state = np.random.RandomState(1)
         self.n_input = n_input
         self.n_output = n_output
         self.eta = eta
